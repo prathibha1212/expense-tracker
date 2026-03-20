@@ -11,8 +11,8 @@ export default function Chart({ income, expense }) {
 
   return (
     <div style={{ display: "flex", justifyContent: "center" }}>
-      <PieChart width={300} height={300}>
-        <Pie data={data} dataKey="value" outerRadius={100}>
+      <PieChart width={240} height={240}>
+        <Pie data={data} dataKey="value" outerRadius={80}>
           {data.map((entry, index) => (
             <Cell key={index} fill={COLORS[index]} />
           ))}

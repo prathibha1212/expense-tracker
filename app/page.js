@@ -8,13 +8,11 @@ export default function Home() {
   const [category, setCategory] = useState("");
   const [customText, setCustomText] = useState("");
 
-  // Load from localStorage
   useEffect(() => {
     const saved = JSON.parse(localStorage.getItem("transactions"));
     if (saved) setTransactions(saved);
   }, []);
 
-  // Save to localStorage
   useEffect(() => {
     localStorage.setItem("transactions", JSON.stringify(transactions));
   }, [transactions]);
@@ -22,16 +20,15 @@ export default function Home() {
   const addTransaction = (e) => {
     e.preventDefault();
 
-    if (!amount || !category) return;
+    if (!amount || !category || (category === "Others" && !customText)) return;
 
-    const label =
-      category === "Others" ? customText : category;
+    const label = category === "Others" ? customText : category;
 
     const newTransaction = {
       id: Date.now(),
       label,
       amount: +amount,
-      date: new Date().toLocaleDateString(), // ✅ DATE ADDED
+      date: new Date().toLocaleDateString(),
     };
 
     setTransactions([newTransaction, ...transactions]);
@@ -67,35 +64,39 @@ export default function Home() {
     >
       <div
         style={{
-          width: "500px",
+          width: "450px",
           background: "white",
-          padding: "25px",
+          padding: "18px",
           borderRadius: "15px",
-          boxShadow: "0 10px 30px rgba(0,0,0,0.1)",
+          boxShadow: "0 10px 25px rgba(0,0,0,0.1)",
         }}
       >
-        <h1 style={{ textAlign: "center" }}>💰 Expense Tracker</h1>
+        <h2 style={{ textAlign: "center", marginBottom: "10px" }}>
+          💰 Expense Tracker
+        </h2>
 
-        <h2 style={{ textAlign: "center" }}>₹{balance}</h2>
+        <h3 style={{ textAlign: "center", marginBottom: "10px" }}>
+          ₹{balance}
+        </h3>
 
         {/* Cards */}
         <div
           style={{
             display: "flex",
             justifyContent: "space-between",
-            margin: "20px 0",
+            margin: "12px 0",
           }}
         >
           <div
             style={{
               background: "#e8fff1",
-              padding: "15px",
-              borderRadius: "10px",
+              padding: "10px",
+              borderRadius: "8px",
               width: "48%",
               textAlign: "center",
             }}
           >
-            <h4>Income</h4>
+            <small>Income</small>
             <p style={{ color: "green", fontWeight: "bold" }}>
               ₹{income}
             </p>
@@ -104,13 +105,13 @@ export default function Home() {
           <div
             style={{
               background: "#ffecec",
-              padding: "15px",
-              borderRadius: "10px",
+              padding: "10px",
+              borderRadius: "8px",
               width: "48%",
               textAlign: "center",
             }}
           >
-            <h4>Expense</h4>
+            <small>Expense</small>
             <p style={{ color: "red", fontWeight: "bold" }}>
               ₹{Math.abs(expense)}
             </p>
@@ -125,20 +126,20 @@ export default function Home() {
           onSubmit={addTransaction}
           style={{
             display: "flex",
-            gap: "10px",
-            marginTop: "15px",
+            gap: "8px",
+            marginTop: "10px",
             flexWrap: "wrap",
           }}
         >
           <input
             type="number"
-            placeholder="Amount (+/-)"
+            placeholder="Amount"
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
             style={{
               flex: "1",
-              padding: "10px",
-              borderRadius: "8px",
+              padding: "8px",
+              borderRadius: "6px",
               border: "1px solid #ccc",
             }}
           />
@@ -148,8 +149,8 @@ export default function Home() {
             onChange={(e) => setCategory(e.target.value)}
             style={{
               flex: "1",
-              padding: "10px",
-              borderRadius: "8px",
+              padding: "8px",
+              borderRadius: "6px",
               border: "1px solid #ccc",
             }}
           >
@@ -161,17 +162,16 @@ export default function Home() {
             <option value="Others">Others</option>
           </select>
 
-          {/* Conditional input */}
           {category === "Others" && (
             <input
               type="text"
-              placeholder="Enter description"
+              placeholder="Description"
               value={customText}
               onChange={(e) => setCustomText(e.target.value)}
               style={{
                 flex: "1 1 100%",
-                padding: "10px",
-                borderRadius: "8px",
+                padding: "8px",
+                borderRadius: "6px",
                 border: "1px solid #ccc",
               }}
             />
@@ -183,26 +183,36 @@ export default function Home() {
               background: "#0070f3",
               color: "white",
               border: "none",
-              padding: "10px",
-              borderRadius: "8px",
+              padding: "8px",
+              borderRadius: "6px",
               cursor: "pointer",
             }}
           >
-            Add Transaction
+            Add
           </button>
         </form>
 
         {/* Transactions */}
-        <ul style={{ marginTop: "20px", padding: 0, listStyle: "none" }}>
+        <h4 style={{ marginTop: "15px" }}>Transactions</h4>
+
+        <ul
+          style={{
+            marginTop: "10px",
+            padding: 0,
+            listStyle: "none",
+            maxHeight: "200px",
+            overflowY: "auto",
+          }}
+        >
           {transactions.map((t) => (
             <li
               key={t.id}
               style={{
                 display: "flex",
                 justifyContent: "space-between",
-                padding: "10px",
-                marginBottom: "10px",
-                borderRadius: "8px",
+                padding: "8px",
+                marginBottom: "8px",
+                borderRadius: "6px",
                 background:
                   t.amount > 0 ? "#e8fff1" : "#ffecec",
               }}
@@ -214,16 +224,16 @@ export default function Home() {
               </span>
 
               <span>
-                ₹{t.amount}
+                ₹{Math.abs(t.amount)}
                 <button
                   onClick={() => deleteTransaction(t.id)}
                   style={{
-                    marginLeft: "10px",
+                    marginLeft: "8px",
                     background: "#ff4d4d",
                     color: "white",
                     border: "none",
-                    padding: "5px 8px",
-                    borderRadius: "6px",
+                    padding: "4px 6px",
+                    borderRadius: "5px",
                     cursor: "pointer",
                   }}
                 >
