@@ -47,13 +47,8 @@ A modern expense tracking web application built using Next.js that helps users m
 
 ## 🖥️ Live Demo
 
-👉 (Add your Vercel link here after deployment)
+👉 expense-tracker-hh2tdq289-prathibha1212s-projects.vercel.app
 
----
-
-## 📸 Screenshots
-
-(Add screenshots here if you want)
 
 ---
 
